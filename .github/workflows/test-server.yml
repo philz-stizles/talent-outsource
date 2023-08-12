@@ -1,0 +1,35 @@
+# This is a basic workflow to help you get started with Actions
+
+name: tests-server
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events 
+  pull_request:
+  # but only for any changes to auth folder or service 'auth/**''
+  # Being a microservice, were projects are independent, you only want to run
+  # this test when changes are made to this service, and not when changes are 
+  # made to other services,
+    paths:
+      - 'server/**'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+      # create a separate script for git continuous integration testing 'test:ci'
+      # our 'test' script is running jest in watcher mode(--watchAll) and it will run 
+      # continuously watching for changes made to our source code. But, here, we want just
+      # one run of our test script and exit immediately
+        run: cd server && npm install && npm run test:ci
