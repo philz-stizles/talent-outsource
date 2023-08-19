@@ -1,17 +1,17 @@
-import User from './../user';
+import User from '@src/models/user';
 
 describe('User Model', () => {
   it('has all the required attributes', () => {
-    const expectedKeys = [
+    const requiredAttributes = [
       'email',
-      'passwords',
+      'password',
       'firstname',
       'lastname',
       'isEmailVerified',
     ];
     const modelAttributes = Object.keys(User.schema.paths);
     expect(
-      expectedKeys.every((expectedKey) => modelAttributes.includes(expectedKey))
+      requiredAttributes.every((expectedKey) => modelAttributes.includes(expectedKey))
     ).toEqual(true);
   });
 

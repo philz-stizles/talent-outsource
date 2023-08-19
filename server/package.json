@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node src/server.js",
+    "start:prod": "SET NODE_ENV=production&&nodemon src/server.js",
     "dev": "nodemon",
-    "test": "jest --watch --no-cache",
-    "test:ci": "jest"
+    "test": "NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles",
+    "test:watch": "NODE_ENV=test jest --watchAll --detectOpenHandles",
+    "test:coverage": "NODE_ENV=test jest --coverage --testTimeout=10000 --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

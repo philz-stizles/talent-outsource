@@ -1,17 +1,19 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import dotenv from 'dotenv'
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.test.local') });
 
 declare global {
   var signin: () => string[];
 }
 
-jest.mock('../nats-wrapper');
-
 let mongo: any;
 
 beforeAll(async () => {
-  process.env.JWT_KEY = 'nh7dd4456vhbgkjvdDWQZXMKOY6FDEAmkbZMOPI';
+  // process.env.JWT_KEY = 'nh7dd4456vhbgkjvdDWQZXMKOY6FDEAmkbZMOPI';
 
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();

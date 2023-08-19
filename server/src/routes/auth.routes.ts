@@ -2,7 +2,7 @@ import express from 'express';
 import { authController } from '@src/controllers';
 import { validator } from '@src/middlewares';
 import { authValidation } from '@src/validations';
-import tokenRoutes from '@src/routes/token.routes'
+import tokenRoutes from '@src/routes/otp.routes'
 
 const router = express.Router();
 
