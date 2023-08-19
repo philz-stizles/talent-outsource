@@ -3,7 +3,7 @@ import app from '@src/app';
 import dbConnect from '@src/lib/db';
 import { dbURI } from '@src/utils/constants';
 import { tokenQueue } from '@src/schedulers/token-queue';
-import graphQLServer from '@src/graphql';
+import initGraphQLServer from '@src/graphql';
 
 const startUp = async (expressApp: any) => {
   if (!process.env.SESSION_SECRET) {
@@ -31,7 +31,7 @@ const startUp = async (expressApp: any) => {
   });
 
   // Initialize GraphQL
- graphQLServer(expressApp);
+  await initGraphQLServer(expressApp);
 
   // await tokenQueue.add(
   //   {},

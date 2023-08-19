@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { graphqlHTTP } from 'express-graphql';
+import { createHandler } from 'graphql-http';
 import { schema } from './schema';
 import config from '@src/config';
 
-const graphQLServer = async (app: any) => {
+const initGraphQLServer = async (app: any) => {
   const loggingMiddleware = (
     req: Request,
     res: Response,
@@ -16,17 +16,15 @@ const graphQLServer = async (app: any) => {
   app.use(loggingMiddleware);
   app.use(
     '/graphql',
-    graphqlHTTP({
+    createHandler({
       schema: schema,
-      graphiql: true,
+      // graphiql: true,
     })
   );
 
-  if(config.env !== 'production') {
-    console.log(
-    `GraphQL running @ http://localhost:${config.port}/graphql`
-  );
+  if (config.env !== 'production') {
+    console.log(`GraphQL running @ http://localhost:${config.port}/graphql`);
   }
 };
 
-export default graphQLServer;
+export default initGraphQLServer;
