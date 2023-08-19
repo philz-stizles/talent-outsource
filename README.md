@@ -1,5 +1,7 @@
 # Jobs
 
+![example workflow](https://github.com/philz-stizles/talent-outsource/actions/workflows/test-server.yml/badge.svg)
+
 ## Table of Contents
 
 (1.) [Setup React App](#setup-react-app)
