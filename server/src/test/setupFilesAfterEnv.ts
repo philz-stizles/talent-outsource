@@ -10,6 +10,8 @@ declare global {
   var signin: () => string[];
 }
 
+jest.mock('../services/email');
+
 let mongo: any;
 
 beforeAll(async () => {
@@ -18,7 +20,7 @@ beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
 
-  await mongoose.connect(mongoUri, {});
+  await mongoose.connect(mongoUri);
 });
 
 beforeEach(async () => {

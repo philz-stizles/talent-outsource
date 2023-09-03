@@ -11,7 +11,6 @@ class ApiError extends Error {
     isOperational = true,
     stack = ''
   ) {
-    console.error(message);
     super(message);
 
     this.statusCode = statusCode;

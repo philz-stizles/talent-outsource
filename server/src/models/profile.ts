@@ -1,11 +1,17 @@
 import { Schema, model } from 'mongoose';
 
+export enum WorkAvailability {
+  Available,
+  OpenToOffers,
+  Unavailable,
+}
+
 const profileSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
       ref: 'user',
-      required: true
+      required: true,
     },
     title: { type: String, trim: true },
     yearsOfExperience: { type: Number, default: 0, required: true },
@@ -15,6 +21,17 @@ const profileSchema = new Schema(
     },
     bio: {
       type: String,
+    },
+    avatar: String,
+    resume: String,
+    roles: [String],
+    workAvailability: {
+      availability: {
+        type: String,
+        enum: WorkAvailability,
+        default: WorkAvailability.Available,
+      },
+      noticePeriod: String,
     },
     annualSalary: {},
     experience: [
@@ -114,6 +131,6 @@ const profileSchema = new Schema(
   { timestamps: true }
 );
 
-const Profile = model('Profile', profileSchema);
+const Company = model('Profile', profileSchema);
 
-export default Profile;
+export default Company;

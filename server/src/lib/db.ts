@@ -1,15 +1,20 @@
+import logger from '@src/config/logger';
 import mongoose from 'mongoose';
 
 const mongooseConnect = async (dbUri: string): Promise<void> => {
-  mongoose.connect(dbUri);
-  mongoose.connection.once('open', () => {
-    console.log('Connected to database.');
-  });
-  mongoose.connection.on('error', (e) => {
-    console.log('Error connecting to database.');
-  });
-  mongoose.connection.on('disconnected', () => {
-    console.log('Disconnected from database.');
+  return new Promise<void>((resolve, reject) => {
+    mongoose.connect(dbUri);
+    mongoose.connection.once('open', () => {
+      logger.info('Connected to database.');
+      resolve();
+    });
+    mongoose.connection.on('error', e => {
+      logger.error('Error connecting to database.');
+      reject();
+    });
+    mongoose.connection.on('disconnected', () => {
+      logger.info('Disconnected from database.');
+    });
   });
 };
 

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { createHandler } from 'graphql-http';
 import { schema } from './schema';
 import config from '@src/config';
+import logger from '@src/config/logger';
 
 const initGraphQLServer = async (app: any) => {
   const loggingMiddleware = (
@@ -18,12 +19,11 @@ const initGraphQLServer = async (app: any) => {
     '/graphql',
     createHandler({
       schema: schema,
-      // graphiql: true,
     })
   );
 
   if (config.env !== 'production') {
-    console.log(`GraphQL running @ http://localhost:${config.port}/graphql`);
+    logger.info(`GraphQL running @ http://localhost:${config.port}/graphql`);
   }
 };
 
