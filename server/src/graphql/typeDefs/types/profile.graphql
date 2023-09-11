@@ -1,0 +1,27 @@
+# Query type
+type Query {
+  profile: Profile
+}
+
+type Experience {
+  id: String
+  title: String!
+  company: String!
+  location: String
+  industry: String
+  from: String
+  to: String
+  current: Boolean
+}
+
+type Profile {
+  id: String
+  title: String
+  yearsOfExperience: Int
+  skills: [String]
+  bio: String
+  avatar: String
+  resume: String
+  roles: [String]
+  workAvailability: String
+}

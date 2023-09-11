@@ -3,13 +3,13 @@
 ## Table of Contents
 
 1. [Technologies](#1-technologies)
-2. [Setup React App](#setup-react-app)
-3. [Type Checking using Typescript](#setup-typescript)
-4. [Setup Nodemon](#setup-typescript)
-5. [Code Linting using Eslint & Prettier](#setup-nodemon)
-6. [Testing with Jest](#setup-typescript)
-7. [Database Management using Mongoose ORM](#database-management-using-mongodb)
-8. [GraphQL API using GraphQL HTTP](#graphql-api-using-graphql-http)
+2. [Type Checking using Typescript](#2-type-checking-using-typescript)
+3. [Code Linting using Eslint](#3-code-linting-using-eslint)
+4. [Code Formatting using Prettier](#4-code-formatting-using-prettier)
+5. [Setup Nodemon](#5-setup-nodemon)
+6. [Testing with Jest](#6-setup-testing-using-jest)
+7. [Database Management using Mongoose ORM](#7-database-management-using-mongodb)
+8. [GraphQL API using GraphQL HTTP](#8-graphql-api-using-graphql-http)
 9. [GraphQL API using socket.io](#graphql-api-using-graphql-http)
 10. [Session Management using Express Session](#session-management-using-express-session)
 11. [Authentication using Passport](#session-management-using-express-session)
@@ -26,29 +26,24 @@
 - File Upload: Cloudinary
 - Task Scheduling: Bull, Redis
 
-### Setup React App
+### 2. Type Checking using Typescript
 
-### Setup Typescript
-
-```javascript
-npm i -D typescript ts-node @types/nodemon @types/express tsconfig-paths
-
+```shell
 npm i -g typescript ts-node
-
+npm i -D typescript ts-node @types/nodemon @types/express tsconfig-paths
 npx tsc --init
 ```
 
-### **Configure Eslint**
+### **3. Code Linting using Eslint**
 
 - Install vscode eslint plugin
 
-- Recommendation to install eslint on a local level:
+- Configure eslint (Recommendation to install eslint on a local level):
 
-`npm i -D eslint`
-
-- ---Configure eslint:
-
-`npx eslint --init`
+```shell
+npm i -D eslint
+npx eslint --init
+```
 
 ✔ How would you like to use ESLint? To check syntax, find problems, and enforce code style
 ✔ What type of modules does your project use? JavaScript modules (import/export)
@@ -70,7 +65,7 @@ npx tsc --init
 
 - Reload vscode for configurations to kick in: ctrl + shift + p > reload
 
-### Configure Prettier
+### **4. Code Formatting using Prettier**
 
 - Install vscode eslint plugin.
 
@@ -95,9 +90,11 @@ npx tsc --init
   npm i -D eslint-config-prettier eslint-plugin-import eslint-plugin-prettier
 ```
 
-### Setup Nodemon
+### 5. Setup Nodemon
 
-`npm i -D nodemon`
+```shell
+npm i -D nodemon
+```
 
  <!-- nodemon.json -->
 
@@ -114,15 +111,15 @@ npx tsc --init
 }
 ```
 
-### Setup Testing using Jest
+### 6. Setup Testing using Jest
 
 ```shell
 npm i -D jest ts-jest @types/jest supertest @types/supertest mongodb-memory-server
-
 npx ts-jest config:init
 ```
 
  <!-- package.json -->
+
 ```json
 "scripts": {
   "test": "jest --watch --no-cache",
@@ -130,30 +127,30 @@ npx ts-jest config:init
 }
 ```
 
-### GraphQL API using GraphQL HTTP
+### 7. Database Management using MongoDB
 
-npm i graphql graphql-http
-
-### Database Management using MongoDB
-
+```shell
 npm i mongoose
+```
 
-### Session Management using Express Session
+### 8. GraphQL API using GraphQL HTTP
 
+```shell
+npm i ws
+npm i --save-dev @types/ws
+```
+
+```shell
+npm i graphql-upload```
+
+### 9. Session Management using Express Session
+
+```shell
 npm i express-session connect-mongo
-
 npm i --save-dev @types/express-session
+```
 
-### Authentication using Passport
-
-npm i passport
-
-npm i --save-dev @types/passport
-
- <!-- app.ts -->
-
-app.use(passport.initialize());
-app.use(passport.session());
+### 10. Authentication using Passport
 
 docker run --name bull-redis -d redis
 

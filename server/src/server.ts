@@ -14,16 +14,16 @@ const startUp = async (expressApp: any) => {
   const httpServer = http.createServer(expressApp); // Now we have our own http instance
   // unlike with express where the server was implicitly create for us
 
-  const PORT = config.port;
-  const server = httpServer.listen(PORT, () => {
-    logger.info(`🚀 Server running on ${config.api.baseUrl} ${config.env}`);
-  });
-
   // Initialize GraphQL
-  await initGraphQLServer(expressApp);
+  await initGraphQLServer(expressApp, httpServer);
+
+  const PORT = config.port;
+  const server = httpServer.listen(PORT, () => {});
 
   await tokenQueue.add(
-    {},
+    {
+      test: 'test',
+    },
     // If you do not specify a delay, the job will execute immediately
     {
       repeat: {

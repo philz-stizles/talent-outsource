@@ -69,7 +69,7 @@ const profileSchema = new Schema(
     ],
     education: [
       {
-        school: {
+        institution: {
           type: String,
           required: true,
         },
@@ -131,6 +131,6 @@ const profileSchema = new Schema(
   { timestamps: true }
 );
 
-const Company = model('Profile', profileSchema);
+const Profile = model('Profile', profileSchema);
 
-export default Company;
+export default Profile;

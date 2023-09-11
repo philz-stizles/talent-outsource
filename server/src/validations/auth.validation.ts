@@ -21,7 +21,7 @@ const signUp = {
 
 const signUpTalent = {
   body: Joi.object().keys({
-    source: Joi.string().not().required(),
+    source: Joi.array().not().required(),
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(strongPassword),

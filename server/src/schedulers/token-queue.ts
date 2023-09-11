@@ -4,7 +4,7 @@ import TokenArchive from '@src/models/token-archive';
 import Queue from 'bull';
 
 const tokenQueue = new Queue('token:archive', {
-  redis: { host: config.redisHost },
+  redis: { host: config.redisHost, port: 6379 },
 });
 // This will execute immediately if a delay not specify to any job added to this queue.
 tokenQueue.process(async (job) => {

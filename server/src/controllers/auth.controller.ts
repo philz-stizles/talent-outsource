@@ -11,7 +11,6 @@ import {
 import { ApiResponse, httpStatus } from '@src/utils/api.utils';
 import * as ObjectUtils from '@src/utils/object.utils';
 
-
 const signUpClient = catchAsync(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   const newUser = await userService.createUser(name, email, password);
@@ -23,6 +22,7 @@ const signUpClient = catchAsync(async (req: Request, res: Response) => {
 
 const signUpTalent = catchAsync(async (req: Request, res: Response) => {
   const { name, email, password, source } = req.body;
+  console.log(source);
 
   // Create a new user.
   const newUser = await userService.createUser(name, email, password);
@@ -40,7 +40,12 @@ const signUpTalent = catchAsync(async (req: Request, res: Response) => {
     .json(
       new ApiResponse(
         'User created successfully',
-        ObjectUtils.pick(newUser.toObject(), ['email', 'name', 'firstname', 'lastname'])
+        ObjectUtils.pick(newUser.toObject(), [
+          'email',
+          'name',
+          'firstname',
+          'lastname',
+        ])
       )
     );
 });
