@@ -3,6 +3,8 @@ import auth from './auth';
 import jobs from './jobs';
 import profiles from './profiles';
 
+console.log(jobs.queries);
+
 const resolvers = {
   // This maps the `Upload` scalar to the implementation provided
   // by the `graphql-upload` package.

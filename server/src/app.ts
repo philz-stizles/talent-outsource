@@ -46,7 +46,7 @@ app.use(express.json());
 app.use(config.api.baseEndpoint, routes);
 
 // Handle unhandled routes - routes that are not graphql and are not caught by any routers.
-app.all('/^(?!graphql$)/', notFoundHandler);
+app.all('/^(?!graphql$)/', notFoundHandler); 
 
 // Global error handling.
 app.use(globalErrorHandler);

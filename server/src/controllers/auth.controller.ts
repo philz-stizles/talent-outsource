@@ -10,14 +10,23 @@ import {
 } from '@src/services';
 import { ApiResponse, httpStatus } from '@src/utils/api.utils';
 import * as ObjectUtils from '@src/utils/object.utils';
+import { RoleType } from '@src/models/role';
 
-const signUpClient = catchAsync(async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-  const newUser = await userService.createUser(name, email, password);
-  const newCompany = await companyService.createCompany();
+const signUpCompany = catchAsync(async (req: Request, res: Response) => {
+  const { companyName, name, email, password } = req.body;
+  const newUser = await userService.createUser({
+    name,
+    email,
+    password,
+    role: RoleType.COMPANY,
+  });
+  const newCompany = await companyService.createCompany({
+    user: newUser,
+    name: companyName,
+  });
   res
     .status(httpStatus.CREATED)
-    .json(new ApiResponse('User created successfully', newUser));
+    .json(new ApiResponse('Company created successfully', newCompany));
 });
 
 const signUpTalent = catchAsync(async (req: Request, res: Response) => {
@@ -25,7 +34,12 @@ const signUpTalent = catchAsync(async (req: Request, res: Response) => {
   console.log(source);
 
   // Create a new user.
-  const newUser = await userService.createUser(name, email, password);
+  const newUser = await userService.createUser({
+    name,
+    email,
+    password,
+    role: RoleType.TALENT,
+  });
 
   // Send verification email with Token.
   // const token = await tokenService.generateVerifyEmailToken(email);
@@ -52,7 +66,12 @@ const signUpTalent = catchAsync(async (req: Request, res: Response) => {
 
 const signUp = catchAsync(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
-  const newUser = await userService.createUser(name, email, password);
+  const newUser = await userService.createUser({
+    name,
+    email,
+    password,
+    role: RoleType.TALENT,
+  });
 
   res
     .status(httpStatus.CREATED)
@@ -126,7 +145,7 @@ const validateOtp = catchAsync(async (req: Request, res: Response) => {});
 const disableOtp = catchAsync(async (req: Request, res: Response) => {});
 
 export default {
-  signUpClient,
+  signUpCompany,
   signUpTalent,
   signUp,
   verifyToken,

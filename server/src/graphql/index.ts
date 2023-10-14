@@ -11,16 +11,15 @@ import pkg from 'body-parser';
 import config from '@src/config';
 import logger from '@src/config/logger';
 import { Server } from 'http';
-import resolvers from './resolvers'
+import resolvers from './resolvers';
 import typeDefs from './typeDefs';
+import context from './context';
+import User, { IUser } from '@src/models/user';
+
 const { json } = pkg;
 
 const initGraphQLServer = async (app: any, httpServer: Server) => {
   const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-  interface AppContext {
-    token?: String;
-  }
 
   const plugins = [
     ApolloServerPluginDrainHttpServer({ httpServer }), // Proper shutdown for the WebSocket server.
@@ -37,6 +36,12 @@ const initGraphQLServer = async (app: any, httpServer: Server) => {
   if (config.env === 'production') {
     plugins.push(ApolloServerPluginLandingPageDisabled());
   }
+
+  interface AppContext {
+    isAuthenticated: boolean;
+    user: IUser | null;
+  }
+
   const server = new ApolloServer<AppContext>({
     schema,
     plugins,
@@ -74,7 +79,7 @@ const initGraphQLServer = async (app: any, httpServer: Server) => {
     //   maxFiles: 5, // Maximum allowed number of files.
     // }),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.token }),
+      context,
     })
   );
 

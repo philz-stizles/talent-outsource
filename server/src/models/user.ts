@@ -1,5 +1,6 @@
 import { Document, Model, Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { RoleType } from '@src/models/role';
 
 // Create an interface representing a document in MongoDB.
 export interface IUser {
@@ -10,6 +11,7 @@ export interface IUser {
   isEmailVerified: boolean;
   avatar?: string;
   password?: string;
+  role: RoleType;
   passwordChangedAt?: Date;
   passwordResetExpiresIn?: number;
   passwordResetToken: string | undefined;
@@ -39,6 +41,11 @@ const userSchema = new Schema<IUserDocument, IUserModel>({
     unique: true,
     index: true,
     trim: true,
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: RoleType,
   },
   isEmailVerified: { type: Boolean, default: false },
   password: {

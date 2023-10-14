@@ -3,6 +3,7 @@ type Query {
   profile: Profile
 }
 
+# Object type
 type Experience {
   id: String
   title: String!
@@ -14,6 +15,7 @@ type Experience {
   current: Boolean
 }
 
+# Object type
 type Profile {
   id: String
   title: String

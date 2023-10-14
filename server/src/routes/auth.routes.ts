@@ -17,7 +17,7 @@ router.post('/signup', validator(authValidation.signUp), authController.signUp);
 router.post(
   '/client-signup',
   validator(authValidation.signUp),
-  authController.signUpClient
+  authController.signUpCompany
 );
 
 router.post(

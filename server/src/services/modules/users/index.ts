@@ -1,4 +1,5 @@
 import ApiError from '@src/error/api-error';
+import { RoleType } from '@src/models/role';
 import User, { IUserDocument } from '@src/models/user';
 import { httpStatus } from '@src/utils/api.utils';
 
@@ -7,13 +8,21 @@ import { httpStatus } from '@src/utils/api.utils';
  * @param {Object} userBody
  * @returns {Promise<IUserDocument>}
  */
-const createUser = async (
-  name: string,
-  email: string,
-  password: string,
-  firstname?: string,
-  lastname?: string
-): Promise<IUserDocument> => {
+const createUser = async ({
+  name,
+  email,
+  password,
+  role,
+  firstname,
+  lastname,
+}: {
+  name: string;
+  email: string;
+  password: string;
+  role: RoleType;
+  firstname?: string;
+  lastname?: string;
+}): Promise<IUserDocument> => {
   if (await getUserByEmail(email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
@@ -24,7 +33,21 @@ const createUser = async (
     firstname,
     lastname,
     password,
+    role,
   });
+};
+
+/**
+ * Get user by email
+ * @param {string} id
+ * @param {Array<Key>} select
+ * @returns {Promise<TechStackDocument | null>}
+ */
+const getById = async (
+  id?: string,
+  select?: string[]
+): Promise<IUserDocument | null> => {
+  return await User.findById(id).exec();
 };
 
 /**
@@ -83,4 +106,4 @@ const updateUserByEmail = async (
   return updatedUser;
 };
 
-export default { createUser, getUserByEmail, updateUserByEmail };
+export default { createUser, getById,  getUserByEmail, updateUserByEmail };

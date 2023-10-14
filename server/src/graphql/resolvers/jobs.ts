@@ -1,10 +1,11 @@
 import Job from '@src/models/job';
 
 const queries = {
-  async jobs(_parent: any, _args: any, context: any): Promise<any[]> {
+  jobs: async (_parent: any, _args: any, context: any): Promise<any[]> =>{
+    console.log(context)
     return [];
   },
-  async job(_parent: any, args: any, context: any): Promise<any> {
+  job: async (_parent: any, args: any, context: any): Promise<any> => {
     return args.id;
   },
 };

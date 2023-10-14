@@ -16,6 +16,7 @@ type Job {
   id: ID
   title: String
   description: String
+  candidates: [ID]
   createdAt: String
   updatedAt: String
 }
@@ -35,5 +36,5 @@ type JobMutationResponse {
   statusCode: Int
   status: Boolean
   message: String
-  data: Job
+  # data: Job
 }

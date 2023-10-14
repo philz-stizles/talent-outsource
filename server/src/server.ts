@@ -1,14 +1,18 @@
 import http from 'http';
 import app from '@src/app';
-import dbConnect from '@src/lib/db';
+import dbConnect from '@src/db';
 import { tokenQueue } from '@src/schedulers/token-queue';
 import initGraphQLServer from '@src/graphql';
 import logger from '@src/config/logger';
 import config from '@src/config';
+import seedData from '@src/db/seed';
 
 const startUp = async (expressApp: any) => {
   // Connect to database.
   await dbConnect(config.dbUri);
+
+  // Seed default users.
+  await seedData();
 
   // initialize http server
   const httpServer = http.createServer(expressApp); // Now we have our own http instance

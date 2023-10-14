@@ -1,17 +1,34 @@
-import { Schema, model } from 'mongoose';
+import { Model, Schema, model, Types, Document } from 'mongoose';
 import Job from './job';
 
-const CompanySchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-    required: true,
-  },
-  name: String,
-  description: String,
-  jobs: [{ type: Schema.Types.ObjectId, ref: Job }],
-});
+export interface ICompany {
+  user: Types.ObjectId;
+  name: string;
+  bio: string;
+  employeeRange: string;
+  jobs: any[];
+  createdAt: string;
+  updatedAt: string;
+}
 
-const Company = model('Company', CompanySchema);
+export interface CompanyDocument extends ICompany, Document {}
+
+interface CompanyModel extends Model<CompanyDocument> {}
+
+const CompanySchema = new Schema<CompanyDocument, CompanyModel>(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
+    name: String,
+    bio: String,
+    jobs: [{ type: Schema.Types.ObjectId, ref: Job.name }],
+  },
+  { timestamps: true }
+);
+
+const Company = model<CompanyDocument, CompanyModel>('Company', CompanySchema);
 
 export default Company;

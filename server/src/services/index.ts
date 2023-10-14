@@ -4,6 +4,7 @@ export { default as jobService } from './modules/jobs';
 export { default as companyService } from './modules/companies';
 export { default as profileService } from './modules/profiles';
 export { default as skillService } from './modules/skills';
+export { default as techStackService } from './modules/tech-stacks';
 export { default as hashService } from './hash.service';
 export { default as tokenService } from './token';
 export { default as otpService } from './otp';

@@ -9,12 +9,10 @@
 5. [Setup Nodemon](#5-setup-nodemon)
 6. [Testing with Jest](#6-setup-testing-using-jest)
 7. [Database Management using Mongoose ORM](#7-database-management-using-mongodb)
-8. [GraphQL API using GraphQL HTTP](#8-graphql-api-using-graphql-http)
-9. [GraphQL API using socket.io](#graphql-api-using-graphql-http)
-10. [Session Management using Express Session](#session-management-using-express-session)
-11. [Authentication using Passport](#session-management-using-express-session)
-12. [Security](#session-management-using-express-session)
-13. [Task Scheduling with Bull](#graphql-api-using-graphql-http)
+8. [GraphQL API using Apollo GraphQL Server](#8-graphql-api-using-apollo-graphql-server)
+9. [Session Management using Express Session](#session-management-using-express-session)
+10. [Security](#session-management-using-express-session)
+11. [Task Scheduling with Bull](#graphql-api-using-graphql-http)
 
 ### 1. Technologies
 
@@ -133,7 +131,11 @@ npx ts-jest config:init
 npm i mongoose
 ```
 
-### 8. GraphQL API using GraphQL HTTP
+### 8. GraphQL API using Apollo GraphQL
+
+```shell
+npm i graphql apollo-graphql-server
+```
 
 ```shell
 npm i ws
@@ -141,16 +143,17 @@ npm i --save-dev @types/ws
 ```
 
 ```shell
-npm i graphql-upload```
+npm i graphql-upload
+```
 
 ### 9. Session Management using Express Session
 
 ```shell
 npm i express-session connect-mongo
 npm i --save-dev @types/express-session
-```
+````
 
-### 10. Authentication using Passport
+### 10. Bull
 
 docker run --name bull-redis -d redis
 

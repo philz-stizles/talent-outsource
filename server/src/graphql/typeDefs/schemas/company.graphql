@@ -1,0 +1,13 @@
+type Query {
+  companies: [Company]!
+}
+
+type Company {
+  id: String
+  name: String
+  bio: String
+  employeeRange: String
+  jobs: [Job!]!
+  createdAt: String
+  updatedAt: String
+}

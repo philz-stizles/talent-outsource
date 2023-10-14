@@ -12,6 +12,10 @@ const envVarsSchema = Joi.object()
       .valid('production', 'development', 'test')
       .required(),
     PORT: Joi.number().default(3000),
+    ADMIN_USERNAME: Joi.string().required().description('Default Admin User'),
+    ADMIN_PASSWORD: Joi.string()
+      .required()
+      .description('Default Admin Password'),
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
     JWT_ACCESS_EXPIRATION_MINS: Joi.number()
       .default(30)
@@ -34,9 +38,9 @@ const envVarsSchema = Joi.object()
     SMTP_PORT: Joi.number().description('port to connect to the email server'),
     SMTP_USERNAME: Joi.string().description('username for email server'),
     SMTP_PASSWORD: Joi.string().description('password for email server'),
-    EMAIL_FROM: Joi.string().description(
-      'the from field in the emails sent by the app'
-    ),
+    EMAIL_FROM: Joi.string()
+      .email()
+      .description('the from field in the emails sent by the app'),
   })
   .unknown();
 
@@ -78,4 +82,8 @@ export default {
     baseEndpoint: `/api/${envVars.API_VERSION}`,
   },
   dbUri: envVars.DATABASE_URI,
+  admin: {
+    username: envVars.ADMIN_USERNAME,
+    password: envVars.ADMIN_PASSWORD,
+  },
 };
