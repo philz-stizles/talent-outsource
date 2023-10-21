@@ -1,8 +1,8 @@
 import app from '@src/app';
-import config from '@src/config';
+// import config from '@src/config';
 import request from 'supertest';
 
-const endpoint = `${config.api.baseEndpoint}/auth/talent-signup`;
+// const endpoint = `${config.api.baseEndpoint}/auth/talent-signup`;
 
 describe('Signup Talent', () => {
   it('should be reachable', () => {
