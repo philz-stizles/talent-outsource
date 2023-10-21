@@ -44,7 +44,7 @@ const userSchema = new Schema<IUserDocument, IUserModel>({
   },
   role: {
     type: String,
-    required: true,
+    required: [true, 'A user role is required'],
     enum: RoleType,
   },
   isEmailVerified: { type: Boolean, default: false },
