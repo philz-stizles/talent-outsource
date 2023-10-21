@@ -1,5 +1,10 @@
 type Query {
   companies: [Company]!
+  company(id: ID): Company
+}
+
+type Mutation {
+   createCompany(data: CreateCompanyInput): Response
 }
 
 type Company {
@@ -10,4 +15,9 @@ type Company {
   jobs: [Job!]!
   createdAt: String
   updatedAt: String
+}
+
+input CreateCompanyInput {
+  name: String!
+  bio: String
 }

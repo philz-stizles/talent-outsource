@@ -1,13 +1,13 @@
 type Query {
-  techStacks: [TechStack]
-  techStack(id: ID): TechStack
+  technologies: [Technology]
+  technology(id: ID): Technology
 }
 
 type Mutation {
-  createTechStack(data: CreateTechStackInput): Response
+  createTechnology(data: CreateTechnologyInput): Response
 }
 
-type TechStack {
+type Technology {
   id: ID
   name: String!
   description: String
@@ -23,13 +23,13 @@ type Technology {
   name: String!
   description: String
   isPublished: Boolean!
-  techStack: TechStack
+  technology: Technology
   quizzes: [Quiz]
   createdAt: String
   updatedAt: String
 }
 
-input CreateTechStackInput {
+input CreateTechnologyInput {
   name: String!
   description: String
   isPublished: Boolean
@@ -39,5 +39,5 @@ type Response {
   statusCode: Int
   status: Boolean
   message: String
-  data: TechStack
+  data: Technology
 }

@@ -17,6 +17,7 @@ type Job {
   title: String
   description: String
   candidates: [ID]
+  company: Company
   createdAt: String
   updatedAt: String
 }

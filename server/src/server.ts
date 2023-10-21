@@ -24,17 +24,17 @@ const startUp = async (expressApp: any) => {
   const PORT = config.port;
   const server = httpServer.listen(PORT, () => {});
 
-  await tokenQueue.add(
-    {
-      test: 'test',
-    },
-    // If you do not specify a delay, the job will execute immediately
-    {
-      repeat: {
-        cron: '0 3 * * SAT',
-      },
-    }
-  );
+  // await tokenQueue.add(
+  //   {
+  //     test: 'test',
+  //   },
+  //   // If you do not specify a delay, the job will execute immediately
+  //   {
+  //     repeat: {
+  //       cron: '0 3 * * SAT',
+  //     },
+  //   }
+  // );
 
   process.on('unhandledRejection', (err?: Error) => {
     console.log('UNHANDLED REJECTION! 💥 Shutting down...');

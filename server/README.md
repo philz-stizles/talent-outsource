@@ -131,11 +131,17 @@ npx ts-jest config:init
 npm i mongoose
 ```
 
-### 8. GraphQL API using Apollo GraphQL
+### 8. GraphQL API using Apollo GraphQL Server
 
 ```shell
-npm i graphql apollo-graphql-server
+npm i @apollo/server graphql graphql-tag
 ```
+
+- Utilizing Mock Data to facilitate parallel development
+
+  ```shell
+  npm i @graphql-tools/mock @graphql-tools/schema
+  ```
 
 ```shell
 npm i ws

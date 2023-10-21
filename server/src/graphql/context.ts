@@ -14,6 +14,8 @@ const context = async ({ req }: { req: Request }) => {
     // get the user token from the headers
     const token = authHeader.split(' ')[1];
 
+    console.log(token);
+
     // Verify token
     const decodedToken: IJWTokenPayload | undefined = jwt.verify(
       token,

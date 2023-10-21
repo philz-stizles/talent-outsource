@@ -5,7 +5,6 @@ import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/dis
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
-// import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.mjs"
 import cors from 'cors';
 import pkg from 'body-parser';
 import config from '@src/config';
@@ -18,8 +17,26 @@ import User, { IUser } from '@src/models/user';
 
 const { json } = pkg;
 
+ interface AppContext {
+   isAuthenticated: boolean;
+   user: IUser | null;
+ }
+
 const initGraphQLServer = async (app: any, httpServer: Server) => {
   const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+  // Creating the WebSocket server
+  const wsServer = new WebSocketServer({
+    // This is the `httpServer` we created in a previous step.
+    server: httpServer,
+    // Pass a different path here if app.use
+    // serves expressMiddleware at a different path
+    path: '/subscriptions',
+  });
+
+  // Hand in the schema we just created and have the
+  // WebSocketServer start listening.
+  const serverCleanup = useServer({ schema }, wsServer);
 
   const plugins = [
     ApolloServerPluginDrainHttpServer({ httpServer }), // Proper shutdown for the WebSocket server.
@@ -37,11 +54,6 @@ const initGraphQLServer = async (app: any, httpServer: Server) => {
     plugins.push(ApolloServerPluginLandingPageDisabled());
   }
 
-  interface AppContext {
-    isAuthenticated: boolean;
-    user: IUser | null;
-  }
-
   const server = new ApolloServer<AppContext>({
     schema,
     plugins,
@@ -49,19 +61,6 @@ const initGraphQLServer = async (app: any, httpServer: Server) => {
     csrfPrevention: true,
     cache: 'bounded',
   });
-
-  // Creating the WebSocket server
-  const wsServer = new WebSocketServer({
-    // This is the `httpServer` we created in a previous step.
-    server: httpServer,
-    // Pass a different path here if app.use
-    // serves expressMiddleware at a different path
-    path: '/subscriptions',
-  });
-
-  // Hand in the schema we just created and have the
-  // WebSocketServer start listening.
-  const serverCleanup = useServer({ schema }, wsServer);
 
   await server.start();
   if (config.env !== 'production') {
