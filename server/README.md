@@ -1,78 +1,165 @@
-# Jobs GraphQL Server
+# TalentOutsource Server
 
 ## Table of Contents
 
-(1.) [Setup React App](#setup-react-app)
-(2.) [Setup Typescript](#setup-typescript)
-(3.) [Setup Nodemon](#setup-nodemon)
-(4.) [Testing using Jest](#setup-typescript)
-(5.) [GraphQL API using GraphQL HTTP](#graphql-api-using-graphql-http)
-(6.) [Database Management using Mongoose](#database-management-using-mongodb)
-(7.) [Session Management using Express Session](#session-management-using-express-session)
-(8.) [Authentication using Passport](#session-management-using-express-session)
+1. [Technologies](#1-technologies)
+2. [Type Checking using Typescript](#2-type-checking-using-typescript)
+3. [Code Linting using Eslint](#3-code-linting-using-eslint)
+4. [Code Formatting using Prettier](#4-code-formatting-using-prettier)
+5. [Setup Nodemon](#5-setup-nodemon)
+6. [Testing with Jest](#6-setup-testing-using-jest)
+7. [Database Management using Mongoose ORM](#7-database-management-using-mongodb)
+8. [GraphQL API using Apollo GraphQL Server](#8-graphql-api-using-apollo-graphql-server)
+9. [Session Management using Express Session](#session-management-using-express-session)
+10. [Security](#session-management-using-express-session)
+11. [Task Scheduling with Bull](#graphql-api-using-graphql-http)
 
-### Setup React App
+### 1. Technologies
 
-### Setup Typescript
+- API Architectures: REST(Node|Express) & GraphQL(GraphQL Http)
+- Testing: Jest, Supertest, MongoDB Memory Server
+- Storage: MongoDB
+- Security: Helmet, XSS, Rate limiting
+- Email: NodeMailer
+- File Upload: Cloudinary
+- Task Scheduling: Bull, Redis
 
-    npm i -D typescript ts-node @types/nodemon @types/express tsconfig-paths
+### 2. Type Checking using Typescript
 
-    npm i -g typescript ts-node
+```shell
+npm i -g typescript ts-node
+npm i -D typescript ts-node @types/nodemon @types/express tsconfig-paths
+npx tsc --init
+```
 
-    npx tsc --init
+### **3. Code Linting using Eslint**
 
-### Setup Nodemon
+- Install vscode eslint plugin
 
-    npm i -D nodemon
+- Configure eslint (Recommendation to install eslint on a local level):
 
-    <!-- nodemon.json -->
-    {
-        "watch": ["src"],
-        "ext": "js,ts,json,graphql,env",
-        "ignore": ["node_modules", "dist", "build", ".git", "coverage"],
-        "exec": "ts-node -r tsconfig-path/register ./src/server.ts",
-        "restartable": "rs",
-        "env": {
-            "NODE_ENV": "development"
-        }
-    }
+```shell
+npm i -D eslint
+npx eslint --init
+```
 
-### Setup Testing using Jest
+✔ How would you like to use ESLint? To check syntax, find problems, and enforce code style
+✔ What type of modules does your project use? JavaScript modules (import/export)
+✔ Which framework does your project use? None of these
+✔ Does your project use TypeScript? » Yes
+✔ Where does your code run? Node
+✔ How would you like to define a style for your project? Use a popular style guide Airbnb:
+✔ What format do you want your config file to be in? JavaScript
+✔ Would you like to install them now with npm? » Yes
+✔ Create .eslintignore file: touch .eslintignore add: node_modules dist coverage
 
-    npm i -D jest ts-jest @types/jest supertest @types/supertest mongodb-memory-server
+- Install typescript parser:
 
-    npx ts-jest config:init
+`npm i -D @typescript-eslint/parser`
 
-    <!-- package.json -->
-    "scripts": {
-        "test": "jest --watch --no-cache",
-        "test:ci": "jest"
-    },
+- Install import resolver(optional):
 
-### GraphQL API using GraphQL HTTP
+`npm i -D eslint-import-resolver-typescript tsconfig-paths`
 
-    npm i graphql graphql-http
+- Reload vscode for configurations to kick in: ctrl + shift + p > reload
 
-### Database Management using MongoDB
+### **4. Code Formatting using Prettier**
 
-    npm i mongoose
+- Install vscode eslint plugin.
 
-### Session Management using Express Session
+- Install prettier in project:
+  `npm i -D prettier`
 
-    npm i express-session connect-mongo
+```json
+{
+  "semi": true,
+  "tabWidth": 2,
+  "printWidth": 120,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "arrowParens": "avoid",
+  "jsxBracketSameLine": true
+}
+```
 
-    npm i --save-dev @types/express-session
+- Install prettier eslint plugins:
 
-### Authentication using Passport
+```shell
+  npm i -D eslint-config-prettier eslint-plugin-import eslint-plugin-prettier
+```
 
-    npm i passport
+### 5. Setup Nodemon
 
-    npm i --save-dev @types/passport
+```shell
+npm i -D nodemon
+```
 
-    <!-- app.ts -->
-    app.use(passport.initialize());
-    app.use(passport.session());
+ <!-- nodemon.json -->
 
+```json
+{
+  "watch": ["src"],
+  "ext": "js,ts,json,graphql,env",
+  "ignore": ["node_modules", "dist", "build", ".git", "coverage"],
+  "exec": "ts-node -r tsconfig-path/register ./src/server.ts",
+  "restartable": "rs",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
+```
+
+### 6. Setup Testing using Jest
+
+```shell
+npm i -D jest ts-jest @types/jest supertest @types/supertest mongodb-memory-server
+npx ts-jest config:init
+```
+
+ <!-- package.json -->
+
+```json
+"scripts": {
+  "test": "jest --watch --no-cache",
+  "test:ci": "jest"
+}
+```
+
+### 7. Database Management using MongoDB
+
+```shell
+npm i mongoose
+```
+
+### 8. GraphQL API using Apollo GraphQL Server
+
+```shell
+npm i @apollo/server graphql graphql-tag
+```
+
+- Utilizing Mock Data to facilitate parallel development
+
+  ```shell
+  npm i @graphql-tools/mock @graphql-tools/schema
+  ```
+
+```shell
+npm i ws
+npm i --save-dev @types/ws
+```
+
+```shell
+npm i graphql-upload
+```
+
+### 9. Session Management using Express Session
+
+```shell
+npm i express-session connect-mongo
+npm i --save-dev @types/express-session
+````
+
+### 10. Bull
 
 docker run --name bull-redis -d redis
 

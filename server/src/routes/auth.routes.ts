@@ -1,17 +1,41 @@
 import express from 'express';
 import { authController } from '@src/controllers';
-import { validator } from '@src/middlewares';
+import { authLimiter, validator } from '@src/middlewares';
 import { authValidation } from '@src/validations';
-import tokenRoutes from '@src/routes/token.routes'
+import tokenRoutes from '@src/routes/otp.routes';
+import config from '@src/config';
 
 const router = express.Router();
+
+// limit repeated failed requests to auth endpoints
+if (config.env === 'production') {
+  router.use(authLimiter);
+}
 
 router.post('/signup', validator(authValidation.signUp), authController.signUp);
 
 router.post(
-  '/verify-email',
-  validator(authValidation.verifyEmail),
-  authController.verifyEmail
+  '/client-signup',
+  validator(authValidation.signUp),
+  authController.signUpCompany
+);
+
+router.post(
+  '/talent-signup',
+  validator(authValidation.signUpTalent),
+  authController.signUpTalent
+);
+
+router.post(
+  '/verify-token',
+  validator(authValidation.verifyToken),
+  authController.verifyToken
+);
+
+router.post(
+  '/verify-otp',
+  validator(authValidation.verifyOtp),
+  authController.verifyOtp
 );
 
 router.post('/signin', validator(authValidation.signIn), authController.signIn);

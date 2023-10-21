@@ -1,57 +1,43 @@
-import nodemailer, { TransportOptions } from 'nodemailer';
+import config from '@src/config';
+import logger from '@src/config/logger';
+import nodemailer from 'nodemailer';
+
+// Create a transporter - find a service that nodemailer works with and retrieve their config for host, port etc
+// e.g for prod sendgrid, mailgun, AWS SES
+// e.g for dev mailtrap to fake emails
+const transporter = nodemailer.createTransport(config.email.smtp);
+if (config.env !== 'test') {
+  transporter
+    .verify()
+    .then(() => logger.info('Connected to email server'))
+    .catch(() =>
+      logger.warn(
+        'Unable to connect to email server. Make sure you have configured the SMTP options in .env'
+      )
+    );
+}
 
 type IMailOptions = {
-    email: string
-    subject: string
-    message: string
+  from: string;
+  to: string;
+  subject: string;
+  message: string;
 };
 
-export const sendPlainEmail = async (options: IMailOptions): Promise<void> => {
-  // Create a transporter - find a service that nodemailer works with and retrieve their config for host, port etc
-  // e.g for prod sendgrid, mailgun
-  // e.g for dev mailtrap to fake emails
-  const transporter = nodemailer.createTransport({
-    host: `${process.env.EMAIL_HOST}`,
-    port: process.env.EMAIL_PORT,
-    auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  } as TransportOptions);
-
-  // Define email options
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-  };
-
-  // Send email
-  await transporter.sendMail(mailOptions);
+export const sendPlainEmail = async ({
+  from,
+  to,
+  subject,
+  message,
+}: IMailOptions): Promise<void> => {
+  await transporter.sendMail({ from, to, subject, text: message });
 };
 
-export const sendHTMLEmail = async (options: IMailOptions): Promise<void> => {
-  // Create a transporter - find a service that nodemailer works with and retrieve their config for host, port etc
-  // e.g for prod sendgrid, mailgun
-  // e.g for dev mailtrap to fake emails
-  const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  } as TransportOptions);
-
-  // Define email options
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: options.email,
-    subject: options.subject,
-    html: options.message,
-  };
-
-  // Send email
-  await transporter.sendMail(mailOptions);
+export const sendHTMLEmail = async ({
+  from,
+  to,
+  subject,
+  message,
+}: IMailOptions): Promise<void> => {
+  await transporter.sendMail({ from, to, subject, html: message });
 };

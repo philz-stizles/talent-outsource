@@ -1,0 +1,42 @@
+type Query {
+  currentUser: User
+}
+
+type Mutation {
+  signUp(credentials: SignUpInput): AuthResponse
+  signIn(email: String!, password: String! ): AuthResponse
+  logOut: AuthResponse
+}
+
+# Object type
+type Token {
+  token: String
+  expiresIn: String
+}
+
+type Tokens {
+  access: Token
+  refresh: Token
+}
+
+# Object type
+type LoggedInUser {
+  tokens: Tokens
+  user: User!
+}
+
+# Input type
+input SignUpInput {
+  email: String! # Scalar type
+  username: String
+  name: String # Scalar type
+  password: String! # Scalar type
+}
+
+# Object type
+type AuthResponse {
+  code: String!
+  status: Boolean!
+  message: String!
+  data: LoggedInUser
+}

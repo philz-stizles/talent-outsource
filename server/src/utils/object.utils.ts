@@ -4,11 +4,11 @@
  * @param keys
  * @returns object
  */ export const pick = (obj: object, keys: string[]) => {
-  return keys.reduce<{ [key: string]: unknown }>((finalObj, key) => {
+  return keys.reduce<{ [key: string]: unknown }>((acc, key) => {
     if (obj && Object.hasOwnProperty.call(obj, key)) {
-      finalObj[key] = obj[key as keyof typeof obj];
+      acc[key] = obj[key as keyof typeof obj];
     }
-    return finalObj;
+    return acc;
   }, {});
 };
 

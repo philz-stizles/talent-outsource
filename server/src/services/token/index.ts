@@ -1,4 +1,4 @@
-import jwt  from 'jsonwebtoken';
+import jwt, { JwtPayload }  from 'jsonwebtoken';
 import ApiError from '@src/error/api-error';
 import { userService } from '..';
 import config from '@src/config';
@@ -6,6 +6,14 @@ import Token, { ITokenDocument, TokenType } from '@src/models/token';
 import { IUserDocument } from '@src/models/user';
 import moment from 'moment';
 import { httpStatus } from '@src/utils/api.utils';
+ 
+export interface IJWTokenPayload extends JwtPayload {
+  id: string;
+  userId: string;
+  email: string;
+  iat: number;
+  exp: number;
+}
 
 const generateAuthTokens = async (user: IUserDocument) => {
   const accessExpiry = config.jwt.accessExpirationMinutes;

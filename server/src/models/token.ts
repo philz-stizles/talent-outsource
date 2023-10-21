@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Model, Schema, model } from 'mongoose';
-import bcrypt from 'bcryptjs';
+import { Document, Model, Schema, model } from 'mongoose';
 import config from '@src/config';
 import moment, { Moment } from 'moment';
 
@@ -13,8 +12,7 @@ export enum TokenType {
 
 // Create an interface representing a document in MongoDB.
 export interface IToken {
-  _id: string;
-  userId?: string;
+  userId: string;
   token: string;
   expiresAt: number;
   type: TokenType;
@@ -28,7 +26,7 @@ export interface ITokenDocument extends IToken, Document {
 }
 
 export interface ITokenModel extends Model<ITokenDocument> {
-  generate(userId: string, type: TokenType, expiresAt: Moment): Promise<string>;
+  generate(userId: string, type: TokenType, expiresAt: Moment): string;
   build(userId: string, type: TokenType, expiresAt: Moment): Promise<string>;
 }
 
@@ -36,8 +34,8 @@ export interface ITokenModel extends Model<ITokenDocument> {
 // 2. Create a Schema corresponding to the document interface.
 const tokenSchema = new Schema<ITokenDocument, ITokenModel>(
   {
-    userId: String,
-    token: String,
+    userId: { type: String, required: true },
+    token: { type: String, required: true },
     expiresAt: Date,
     type: String,
     isActive: { type: Boolean, default: true, select: false },
@@ -54,7 +52,7 @@ const tokenSchema = new Schema<ITokenDocument, ITokenModel>(
  * @param {TokenType} type
  * @returns {string}
  */
-tokenSchema.statics.generate = async (
+tokenSchema.statics.generate = (
   userId: string,
   type: TokenType,
   expiresAt: Moment

@@ -1,4 +1,4 @@
-import companyController from '@src/services/company';
+import companyController from '@src/services/modules/companies';
 import express from 'express';
 
 const router = express.Router();

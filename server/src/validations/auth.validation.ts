@@ -19,6 +19,15 @@ const signUp = {
   }),
 };
 
+const signUpTalent = {
+  body: Joi.object().keys({
+    source: Joi.array().not().required(),
+    name: Joi.string().required(),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().custom(strongPassword),
+  }),
+};
+
 const signIn = {
   body: Joi.object().keys({
     email: Joi.string().required(),
@@ -53,18 +62,27 @@ const resetPassword = {
   }),
 };
 
-const verifyEmail = {
+const verifyToken = {
   query: Joi.object().keys({
     token: Joi.string().required(),
   }),
 };
 
+const verifyOtp = {
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    code: Joi.string().required(),
+  }),
+};
+
 export default {
   signUp,
+  signUpTalent,
   signIn,
   signOut,
   refreshTokens,
   forgotPassword,
   resetPassword,
-  verifyEmail,
+  verifyToken,
+  verifyOtp,
 };

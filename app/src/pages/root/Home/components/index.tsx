@@ -1,0 +1,10 @@
+export { default as Features } from './Features/Features';
+export { default as CallToAction } from './CallToAction/CallToAction';
+export { default as Categories } from './Categories/Categories';
+export { default as PostAJob } from './PostAJob/PostAJob';
+export { default as FeaturedJobs } from './FeaturedJobs/FeaturedJobs';
+export { default as Exclusive } from './Exclusive/Exclusive';
+export { default as Subscribe } from './Subscribe/Subscribe';
+export { default as Blog } from './Blog/Blog';
+export { default as Testimonials } from './Testimonials/Testimonials';
+export { default as About } from './About/About';

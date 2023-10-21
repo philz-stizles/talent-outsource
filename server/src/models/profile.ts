@@ -1,11 +1,20 @@
 import { Schema, model } from 'mongoose';
 
+export enum WorkAvailability {
+  Available,
+  OpenToOffers,
+  Unavailable,
+}
+
 const profileSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
       ref: 'user',
+      required: true,
     },
+    title: { type: String, trim: true },
+    yearsOfExperience: { type: Number, default: 0, required: true },
     skills: {
       type: [String],
       required: true,
@@ -13,6 +22,18 @@ const profileSchema = new Schema(
     bio: {
       type: String,
     },
+    avatar: String,
+    resume: String,
+    roles: [String],
+    workAvailability: {
+      availability: {
+        type: String,
+        enum: WorkAvailability,
+        default: WorkAvailability.Available,
+      },
+      noticePeriod: String,
+    },
+    annualSalary: {},
     experience: [
       {
         title: {
@@ -24,6 +45,9 @@ const profileSchema = new Schema(
           required: true,
         },
         location: {
+          type: String,
+        },
+        industry: {
           type: String,
         },
         from: {
@@ -40,11 +64,12 @@ const profileSchema = new Schema(
         description: {
           type: String,
         },
+        skills: [{ type: String }],
       },
     ],
     education: [
       {
-        school: {
+        institution: {
           type: String,
           required: true,
         },
@@ -52,15 +77,15 @@ const profileSchema = new Schema(
           type: String,
           required: true,
         },
-        fieldofstudy: {
+        fieldOfStudy: {
           type: String,
           required: true,
         },
-        from: {
+        fromDate: {
           type: Date,
           required: true,
         },
-        to: {
+        toDate: {
           type: Date,
         },
         current: {
@@ -88,11 +113,24 @@ const profileSchema = new Schema(
       instagram: {
         type: String,
       },
+      website: {
+        type: String,
+      },
     },
+    languages: [{ name: String, fluency: String }],
+    projects: [
+      {
+        title: String,
+        description: String,
+        link: String,
+        startDate: Date,
+        endDate: Date,
+      },
+    ],
   },
   { timestamps: true }
 );
 
-const Company = model('Profile', profileSchema);
+const Profile = model('Profile', profileSchema);
 
-export default Company;
+export default Profile;

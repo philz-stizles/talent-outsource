@@ -1,0 +1,41 @@
+# Query type
+type Query {
+  jobs: [Job]
+  job: Job
+}
+
+# Mutation type
+type Mutation {
+  createJob(data: JobCreateInput): JobMutationResponse
+  updateJob(data: JobUpdateInput): JobMutationResponse
+  deleteJob(id: String): [Job]
+}
+
+# Job Object type
+type Job {
+  id: ID
+  title: String
+  description: String
+  candidates: [ID]
+  company: Company
+  createdAt: String
+  updatedAt: String
+}
+
+input JobCreateInput {
+  title: String
+  description: String
+}
+
+input JobUpdateInput {
+  id: ID
+  title: String
+  description: String
+}
+
+type JobMutationResponse {
+  statusCode: Int
+  status: Boolean
+  message: String
+  # data: Job
+}

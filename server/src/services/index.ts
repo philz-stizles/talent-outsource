@@ -1,8 +1,11 @@
-export { default as authService } from './auth';
-export { default as userService } from './user';
-export { default as jobService } from './job';
-export { default as companyService } from './company';
-export { default as profileService } from './profile';
+export { default as authService } from './modules/auth';
+export { default as userService } from './modules/users';
+export { default as jobService } from './modules/jobs';
+export { default as companyService } from './modules/companies';
+export { default as profileService } from './modules/profiles';
+export { default as skillService } from './modules/skills';
+export { default as techStackService } from './modules/tech-stacks';
 export { default as hashService } from './hash.service';
 export { default as tokenService } from './token';
+export { default as otpService } from './otp';
 export { default as emailService } from './email';

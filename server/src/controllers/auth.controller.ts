@@ -2,15 +2,76 @@ import { Request, Response } from 'express';
 import catchAsync from '@src/utils/catch-async';
 import {
   authService,
+  companyService,
   emailService,
+  otpService,
   tokenService,
   userService,
 } from '@src/services';
 import { ApiResponse, httpStatus } from '@src/utils/api.utils';
+import * as ObjectUtils from '@src/utils/object.utils';
+import { RoleType } from '@src/models/role';
+
+const signUpCompany = catchAsync(async (req: Request, res: Response) => {
+  const { companyName, name, email, password } = req.body;
+  const newUser = await userService.createUser({
+    name,
+    email,
+    password,
+    role: RoleType.COMPANY,
+  });
+  const newCompany = await companyService.createCompany({
+    user: newUser,
+    name: companyName,
+  });
+  res
+    .status(httpStatus.CREATED)
+    .json(new ApiResponse('Company created successfully', newCompany));
+});
+
+const signUpTalent = catchAsync(async (req: Request, res: Response) => {
+  const { name, email, password, source } = req.body;
+  console.log(source);
+
+  // Create a new user.
+  const newUser = await userService.createUser({
+    name,
+    email,
+    password,
+    role: RoleType.TALENT,
+  });
+
+  // Send verification email with Token.
+  // const token = await tokenService.generateVerifyEmailToken(email);
+  // await emailService.sendEmailVerification(email, token);
+
+  // Send verification email with OTP.
+  const otp = await otpService.generateOtp(email);
+  await emailService.sendOTP(email, otp);
+
+  res
+    .status(httpStatus.CREATED)
+    .json(
+      new ApiResponse(
+        'User created successfully',
+        ObjectUtils.pick(newUser.toObject(), [
+          'email',
+          'name',
+          'firstname',
+          'lastname',
+        ])
+      )
+    );
+});
 
 const signUp = catchAsync(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const newUser = await userService.createUser(email, password);
+  const { name, email, password } = req.body;
+  const newUser = await userService.createUser({
+    name,
+    email,
+    password,
+    role: RoleType.TALENT,
+  });
 
   res
     .status(httpStatus.CREATED)
@@ -27,9 +88,15 @@ const resendEmailVerification = catchAsync(
   }
 );
 
-const verifyEmail = catchAsync(async (req: Request, res: Response) => {
-  await authService.verifyEmail(req.query.token as string);
+const verifyToken = catchAsync(async (req: Request, res: Response) => {
+  await authService.verifyEmailWithToken(req.query.token as string);
   res.status(httpStatus.NO_CONTENT).send();
+});
+
+const verifyOtp = catchAsync(async (req: Request, res: Response) => {
+  const { email, code } = req.body;
+  await authService.verifyOtp({ email, code });
+  res.json({ status: true, message: 'Verification Successful', data: email });
 });
 
 const signIn = catchAsync(async (req: Request, res: Response) => {
@@ -73,15 +140,15 @@ const getCurrentUser = catchAsync(async (req: Request, res: Response) => {});
 
 const generateOtp = catchAsync(async (req: Request, res: Response) => {});
 
-const verifyOtp = catchAsync(async (req: Request, res: Response) => {});
-
 const validateOtp = catchAsync(async (req: Request, res: Response) => {});
 
 const disableOtp = catchAsync(async (req: Request, res: Response) => {});
 
 export default {
+  signUpCompany,
+  signUpTalent,
   signUp,
-  verifyEmail,
+  verifyToken,
   resendEmailVerification,
   signIn,
   refreshToken,

@@ -1,15 +1,17 @@
-import { Model, Schema, model } from 'mongoose';
+import { Document, Model, Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { RoleType } from '@src/models/role';
 
 // Create an interface representing a document in MongoDB.
 export interface IUser {
-  _id: string;
   firstname: string;
   lastname: string;
+  name: string;
   email: string;
   isEmailVerified: boolean;
   avatar?: string;
   password?: string;
+  role: RoleType;
   passwordChangedAt?: Date;
   passwordResetExpiresIn?: number;
   passwordResetToken: string | undefined;
@@ -21,7 +23,6 @@ export interface IUser {
 export interface IUserDocument extends IUser, Document {
   comparePassword: (candidatePassword: string) => Promise<boolean>;
   createPasswordResetToken: () => string;
-  isModified: (candidatePassword: string) => Promise<boolean>;
 }
 
 export interface IUserModel extends Model<IUserDocument> {
@@ -32,6 +33,7 @@ export interface IUserModel extends Model<IUserDocument> {
 // 2. Create a Schema corresponding to the document interface.
 const userSchema = new Schema<IUserDocument, IUserModel>({
   firstname: String,
+  name: String,
   lastname: String,
   email: {
     type: String,
@@ -39,6 +41,11 @@ const userSchema = new Schema<IUserDocument, IUserModel>({
     unique: true,
     index: true,
     trim: true,
+  },
+  role: {
+    type: String,
+    required: [true, 'A user role is required'],
+    enum: RoleType,
   },
   isEmailVerified: { type: Boolean, default: false },
   password: {
@@ -55,7 +62,6 @@ userSchema.pre('save', async function (next: any) {
   const user = this as IUserDocument;
   // If password was not modified, do not encrypt
   if (!user.isModified('password')) return next();
-
   try {
     // Generate salt
     const salt = await bcrypt.genSalt(12);

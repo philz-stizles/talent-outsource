@@ -1,0 +1,43 @@
+type Query {
+  technologies: [Technology]
+  technology(id: ID): Technology
+}
+
+type Mutation {
+  createTechnology(data: CreateTechnologyInput): Response
+}
+
+type Technology {
+  id: ID
+  name: String!
+  description: String
+  isPublished: Boolean!
+  technologies: [Technology]
+  user: ID
+  createdAt: String
+  updatedAt: String
+}
+
+type Technology {
+  id: ID
+  name: String!
+  description: String
+  isPublished: Boolean!
+  technology: Technology
+  quizzes: [Quiz]
+  createdAt: String
+  updatedAt: String
+}
+
+input CreateTechnologyInput {
+  name: String!
+  description: String
+  isPublished: Boolean
+}
+
+type Response {
+  statusCode: Int
+  status: Boolean
+  message: String
+  data: Technology
+}

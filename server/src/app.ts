@@ -2,8 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import { notFoundHandler, globalErrorHandler } from '@src/middlewares';
+import {
+  notFoundHandler,
+  globalErrorHandler,
+  xss,
+} from '@src/middlewares';
 import routes from './routes';
+import config from './config';
 
 const app = express();
 
@@ -14,6 +19,9 @@ app.use(helmet({ contentSecurityPolicy: false }));
 
 // parse json request body
 app.use(express.json({ limit: '10kb' }));
+
+// sanitize request data
+app.use(xss());
 
 // gzip compression
 app.use(compression());
@@ -35,11 +43,10 @@ app.use(express.json());
 // );
 
 // api routes
-const apiVersion = process.env.API_VERSION || 'v1';
-app.use(`/api/${apiVersion}`, routes);
+app.use(config.api.baseEndpoint, routes);
 
 // Handle unhandled routes - routes that are not graphql and are not caught by any routers.
-app.all('/^(?!graphql$)/', notFoundHandler);
+app.all('/^(?!graphql$)/', notFoundHandler); 
 
 // Global error handling.
 app.use(globalErrorHandler);

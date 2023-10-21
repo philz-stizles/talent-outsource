@@ -1,0 +1,43 @@
+type Query {
+  techStacks: [TechStack]
+  techStack(id: ID): TechStack
+}
+
+type Mutation {
+  createTechStack(data: CreateTechStackInput): Response
+}
+
+type TechStack {
+  id: ID
+  name: String!
+  description: String
+  isPublished: Boolean!
+  technologies: [Technology]
+  user: ID
+  createdAt: String
+  updatedAt: String
+}
+
+type Technology {
+  id: ID
+  name: String!
+  description: String
+  isPublished: Boolean!
+  techStack: TechStack
+  quizzes: [Quiz]
+  createdAt: String
+  updatedAt: String
+}
+
+input CreateTechStackInput {
+  name: String!
+  description: String
+  isPublished: Boolean
+}
+
+type Response {
+  statusCode: Int
+  status: Boolean
+  message: String
+  data: TechStack
+}

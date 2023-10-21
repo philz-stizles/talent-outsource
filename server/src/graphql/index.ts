@@ -1,32 +1,94 @@
-import { NextFunction, Request, Response } from 'express';
-import { graphqlHTTP } from 'express-graphql';
-import { schema } from './schema';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
+import cors from 'cors';
+import pkg from 'body-parser';
 import config from '@src/config';
+import logger from '@src/config/logger';
+import { Server } from 'http';
+import resolvers from './resolvers';
+import typeDefs from './typeDefs';
+import context from './context';
+import User, { IUser } from '@src/models/user';
 
-const graphQLServer = async (app: any) => {
-  const loggingMiddleware = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    console.log('ip:', req.ip);
-    next();
-  };
+const { json } = pkg;
 
-  app.use(loggingMiddleware);
+ interface AppContext {
+   isAuthenticated: boolean;
+   user: IUser | null;
+ }
+
+const initGraphQLServer = async (app: any, httpServer: Server) => {
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+  // Creating the WebSocket server
+  const wsServer = new WebSocketServer({
+    // This is the `httpServer` we created in a previous step.
+    server: httpServer,
+    // Pass a different path here if app.use
+    // serves expressMiddleware at a different path
+    path: '/subscriptions',
+  });
+
+  // Hand in the schema we just created and have the
+  // WebSocketServer start listening.
+  const serverCleanup = useServer({ schema }, wsServer);
+
+  const plugins = [
+    ApolloServerPluginDrainHttpServer({ httpServer }), // Proper shutdown for the WebSocket server.
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            await serverCleanup.dispose();
+          },
+        };
+      },
+    },
+  ];
+  if (config.env === 'production') {
+    plugins.push(ApolloServerPluginLandingPageDisabled());
+  }
+
+  const server = new ApolloServer<AppContext>({
+    schema,
+    plugins,
+    // Using graphql-upload without CSRF prevention is very insecure.
+    csrfPrevention: true,
+    cache: 'bounded',
+  });
+
+  await server.start();
+  if (config.env !== 'production') {
+    logger.info(`GraphQL running @ http://localhost:${config.port}/graphql`);
+  }
+
   app.use(
     '/graphql',
-    graphqlHTTP({
-      schema: schema,
-      graphiql: true,
+    cors<cors.CorsRequest>(),
+    json(),
+    // graphqlUploadExpress({
+    //   // This middleware should be added before calling `expressMiddleware()`.
+    //   maxFieldSize: 1000000, // Maximum allowed non-file multipart form field size in bytes; enough for your queries.
+    //   maxFileSize: 10000, // Maximum allowed file size in bytes.
+    //   maxFiles: 5, // Maximum allowed number of files.
+    // }),
+    expressMiddleware(server, {
+      context,
     })
   );
 
-  if(config.env !== 'production') {
-    console.log(
-    `GraphQL running @ http://localhost:${config.port}/graphql`
-  );
-  }
+  // return () => {
+  //   if (config.env !== 'production') {
+  //     logger.info(
+  //       `GraphQL running @ http://localhost:${config.port}/graphql`
+  //     );
+  //   }
+  // };
 };
 
-export default graphQLServer;
+export default initGraphQLServer;

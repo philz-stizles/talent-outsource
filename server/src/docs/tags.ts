@@ -4,20 +4,20 @@ export default [
     description: 'User signup and signin',
   },
   {
-    name: 'Profile',
+    name: 'Profiles',
     description: 'User profiles',
   },
   {
-    name: 'Job',
+    name: 'Jobs',
     description:
       'Management APIs to create, read, update and delete job postings',
   },
   {
-    name: 'User',
+    name: 'Users',
     description: 'Management APIs to create, read, update and delete users',
   },
   {
-    name: 'Company',
+    name: 'Companies',
     description: 'Management APIs to create, read, update and delete companies',
   },
 ];
