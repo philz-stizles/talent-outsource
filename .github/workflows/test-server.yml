@@ -32,8 +32,4 @@ jobs:
       - name: Run tests with coverage
         # Ensure the 'test' script is not running jest in watcher mode(--watchAll) or it will run 
         # continuously watching for changes made to our source code.
-        run: cd server && npm run test:coverage
-      # - name: Upload coverage to Codecov
-      #   uses: codecov/codecov-action@v1
-      #   with:
-      #     token: ${{ secrets.CODECOV_SECRET_TOKEN }}
+        run: cd server && npm run test
