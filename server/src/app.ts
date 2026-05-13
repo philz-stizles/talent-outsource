@@ -30,8 +30,6 @@ app.use(compression());
 app.use(cors());
 app.options('*', cors());
 
-app.use(express.json());
-
 // app.use(
 //   session({
 //     secret: process.env.SESSION_SECRET as string,

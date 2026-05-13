@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import catchAsync from '@src/utils/catch-async';
 import {
   authService,

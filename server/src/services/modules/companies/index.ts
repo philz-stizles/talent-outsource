@@ -1,6 +1,6 @@
 import ApiError from '@src/error/api-error';
 import Company, { ICompany, CompanyDocument } from '@src/models/company';
-import {
+import type {
   FilterQuery,
   UpdateQuery,
   QueryOptions,
@@ -9,10 +9,10 @@ import {
 
 type Filter = FilterQuery<CompanyDocument>
 
-type Query = {
+interface Query {
   query?: Filter;
   options?: QueryOptions<CompanyDocument> | null;
-};
+}
 
 export const createCompany = async (input: SchemaDefinition<ICompany>) => {
   const existingCompany = await getCompany({ name: input.name });
